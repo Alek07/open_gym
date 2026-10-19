@@ -84,7 +84,11 @@ RUN apk add --no-cache bubblewrap \
 # refresh token has no business riding along in every archive that instruction produces. Owned
 # by `coach` because the job that writes it has already dropped to that user.
 RUN mkdir -p /coach-auth && chown coach:coach /coach-auth && chmod 700 /coach-auth
-VOLUME ["/coach-auth"]
+# No `VOLUME ["/coach-auth"]`: the documented deploys mount this path themselves (compose binds
+# ./coach-auth, k8s/Railway attach their own volume), and a bare VOLUME instruction is rejected by
+# some OCI builders (Railway: "docker VOLUME ... is not supported, use Railway Volumes"). Dropping
+# it keeps the image portable; it only ever provided an anonymous-volume fallback for running the
+# image with nothing mounted, which no deploy does.
 
 # ---------------------------------------------------------------------------------------------
 # Last, so that a plain `docker build ./api` keeps producing the runtime-free image.
