@@ -88,6 +88,12 @@ ENV PORT=3000
 # resolver makes every /api request hang rather than fail, so any other runtime has to say
 # what its DNS is: on Kubernetes, the kube-dns/CoreDNS service address (commonly 10.96.0.10).
 ENV RESOLVER=127.0.0.11
+# How the resolver above treats IPv6, and how long it caches an answer. The defaults are the
+# Docker values this image has always used. An IPv6-only private network (Railway) needs
+# RESOLVER_IPV6=on — there a backend has no IPv4 address and ipv6=off fails every lookup — and a
+# short RESOLVER_VALID (e.g. 1s) so a redeployed backend's new address is re-resolved promptly.
+ENV RESOLVER_IPV6=off
+ENV RESOLVER_VALID=10s
 # Empty = the CF-Connecting-IP header is dropped before it reaches the API, so it cannot be
 # forged by a direct client. Set to $http_cf_connecting_ip only when Cloudflare is really in
 # front. Defined here too, not just in compose, so the template always renders for anyone
