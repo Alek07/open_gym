@@ -1,9 +1,11 @@
 {
   "$schema": "https://railway.com/railway.schema.json",
-  "//": "Config for the PRIVATE api service (Node). Set this service's Root Directory = api so this file and api/Dockerfile (default, no-AI target) are used. No public domain — the web service reaches it at <service>.railway.internal. Attach a volume at /data. See docs/SELF_HOSTING_RAILWAY.md.",
   "build": {
     "builder": "DOCKERFILE",
-    "dockerfilePath": "Dockerfile"
+    "dockerfilePath": "Dockerfile",
+    "watchPatterns": [
+      "api/**"
+    ]
   },
   "deploy": {
     "healthcheckPath": "/api/health",

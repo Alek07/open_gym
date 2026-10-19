@@ -82,6 +82,21 @@ The api binds to `::` (dual-stack), so it's reachable over Railway's IPv6 privat
 
 ---
 
+## Per-service auto-deploy (watch paths)
+
+So a push only rebuilds the service it affects, each `railway.json` sets `build.watchPatterns`:
+
+- **api** → `api/**`
+- **web** → `frontend/**`, `web/**`, `api/coach/core/**`, `catalogue/media/**` (everything
+  `web/Dockerfile` actually builds from — not just `web/`, or a frontend change wouldn't redeploy
+  the app).
+
+Two things to know: watch paths **only gate GitHub push-triggered deploys** (a manual `railway up`
+always deploys), so both services must be **connected to the GitHub repo** and this config must be
+on the branch Railway deploys. And patterns are repo-root-relative and the feature can be finicky
+with config-as-code — verify with a test push, and if a service ignores them, set the same paths in
+its dashboard **Settings → Build → Watch Paths**.
+
 ## Optional settings
 
 Everything in [`.env.example`](../.env.example) works as a Railway **variable** on the matching
