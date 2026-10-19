@@ -1,0 +1,14 @@
+{
+  "$schema": "https://railway.com/railway.schema.json",
+  "//": "Config for the PUBLIC web/frontend service (nginx: serves the app, proxies /api to the api service over Railway's private network). Use this service's Root Directory = repo root. The api service has its own config at api/railway.json. See docs/SELF_HOSTING_RAILWAY.md.",
+  "build": {
+    "builder": "DOCKERFILE",
+    "dockerfilePath": "web/Dockerfile"
+  },
+  "deploy": {
+    "healthcheckPath": "/",
+    "healthcheckTimeout": 120,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 10
+  }
+}

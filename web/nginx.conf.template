@@ -51,7 +51,13 @@ server {
         # fail fast — every /api request hangs until it times out. Anywhere else, set RESOLVER to
         # the DNS the platform actually provides: on Kubernetes that is the kube-dns/CoreDNS
         # service address (`kubectl -n kube-system get svc kube-dns`, commonly 10.96.0.10).
-        resolver ${RESOLVER} valid=10s ipv6=off;
+        #
+        # RESOLVER_IPV6 / RESOLVER_VALID default to the Docker values (off, 10s) so nothing here
+        # changes for the bundled stack. On an IPv6-only private network the backend has no A
+        # record and ipv6=off makes every lookup fail — Railway is the case this exists for: set
+        # RESOLVER='[fd12::10]' (its internal DNS, brackets required), RESOLVER_IPV6=on, and
+        # RESOLVER_VALID=1s so a redeployed backend's new address is picked up within a second.
+        resolver ${RESOLVER} valid=${RESOLVER_VALID} ipv6=${RESOLVER_IPV6};
         set $api_upstream http://${BACKEND}:${PORT};
         # With a URI after the host, a proxy_pass built from variables sends that URI verbatim;
         # an empty one (the map's no-match case) sends the request's own target, as before.
@@ -93,7 +99,7 @@ server {
         proxy_buffering off;
         proxy_read_timeout 300s;
         proxy_send_timeout 300s;
-        resolver ${RESOLVER} valid=10s ipv6=off;
+        resolver ${RESOLVER} valid=${RESOLVER_VALID} ipv6=${RESOLVER_IPV6};
         set $api_upstream http://${BACKEND}:${PORT};
         # The same mapped target as the block above: under a prefix the upload has to reach the
         # API's /api/media/... route too.

@@ -22,6 +22,7 @@ to install.
 | [Self-hosting](SELF_HOSTING.md) | You're setting up an instance. Start here: running it, passkeys and HTTPS, users, backups, updates, troubleshooting |
 | [HTTPS at home](SELF_HOSTING_HTTPS.md) | You want valid certificates on your LAN without exposing the server to the internet |
 | [Kubernetes](SELF_HOSTING_KUBERNETES.md) | You run a cluster instead of Docker Compose |
+| [Railway](SELF_HOSTING_RAILWAY.md) | You want a one-service deploy on Railway (or a similar single-port PaaS) |
 | [AI coach](AI_COACH.md) | You're deciding whether to turn the coach on, and with which provider |
 | [MCP server](../mcp/README.md) | You want Claude Desktop, Cursor or another AI client to read your training history |
 | [NixOS](NIX.md) | You run NixOS and want openGym native — flake packages and a NixOS module, no Docker |
